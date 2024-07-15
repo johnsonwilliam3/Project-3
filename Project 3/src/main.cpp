@@ -4,7 +4,7 @@
 using namespace std; 
 
 int main() {
-    cout << "Welcome to the Program" << endl;
+    cout << "Welcome to the Program" << endl << endl;
     Sleep(1000);
     cout << "1. XXX" << endl;
     cout << "2. XXX" << endl;
@@ -16,10 +16,20 @@ int main() {
     cout << "8. XXX" << endl;
     cout << "9. XXX" << endl;
     cout << "e<X>it" << endl;
-    cout << "Select a region to analyze: ";
+    cout << endl << "Select a region to analyze: ";
 
     string resp;
     cin >> resp; 
+
+    if(!(resp == "X" || resp == "x")) {
+        int x = stoi(resp);
+        cout << x << endl;
+    }
+
+    else {
+        cout << endl << "Exiting..." << endl;
+        Sleep(3000);
+    }
 
     return 0;
 }
