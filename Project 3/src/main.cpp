@@ -1,6 +1,6 @@
 #include <iostream>
+#include <fstream>
 #include <windows.h>
-
 using namespace std; 
 
 int main() {
@@ -21,15 +21,21 @@ int main() {
     string resp;
     cin >> resp; 
 
+    ofstream outfile;
+    outfile.open("output\\output.txt");
+
     if(!(resp == "X" || resp == "x")) {
         int x = stoi(resp);
-        cout << x << endl;
+        if(outfile.is_open()
+            outfile << resp << endl;
     }
 
     else {
         cout << endl << "Exiting..." << endl;
         Sleep(3000);
     }
+
+    outfile.close();
 
     return 0;
 }

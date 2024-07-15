@@ -1,4 +1,4 @@
-#include "Headers\Region.h"
+#include "..\Headers\Region.h"
 
 Region::Region() {
     ideal_index = 0.0
