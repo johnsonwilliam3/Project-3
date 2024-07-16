@@ -1,5 +1,27 @@
 #include "..\Headers\GraphStructure.h"
 
+GraphStructure::GraphStructure(const GraphStructure& gs) {
+    for(int i = 0; i < gs.vertices.length(); i++) {
+        Vertex* old = gs.vertices[i];
+        Vertex* add = new Vertex(old->value);
+        vertices.push_back(add);
+    }
+}
+
+GraphStructure::operator=(const GraphStructure& gs) {
+    for(int i = 0; i < gs.vertices.length(); i++) {
+        Vertex* old = gs.vertices[i];
+        Vertex* add = new Vertex(old->value);
+        vertices.push_back(add);
+    }
+}
+
+GraphStructure::~GraphStructure() {
+    for(int i = 0; i < vertices.size(); i++) {
+        delete vertices[i];
+    }
+}
+
 GraphStructure::addEdge(int x, int y) {
     Vertex* xV = nullptr;
     Vertex* yV = nullptr;
@@ -29,10 +51,4 @@ GraphStructure::addEdge(int x, int y) {
     std::pair<Vertex*, double> edge(yV, 0.0);
     xV.adjacencyList.push_back(edge);
     
-}
-
-GraphStructure::~GraphStructure() {
-    for(int i = 0; i < vertices.size(); i++) {
-        delete vertices[i];
-    }
 }

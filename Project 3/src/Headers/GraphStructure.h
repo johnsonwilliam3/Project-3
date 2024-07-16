@@ -1,5 +1,5 @@
-#define GRAPH_DEF
-#ifndef GRAPH_DEF
+#ifndef GRAPH_H
+#define GRAPH_H
 
 #include <vector>
 #include "Vertex.h"
@@ -11,9 +11,10 @@ class GraphStructure {
     vector<Vertex*> vertices;
 
     public:
+    GraphStructure(const GraphStructure& gs);
+    operator=(const GraphStructure& gs);
+    ~GraphStructure();
     void addEdge();
-    ~GraphStructure;
-
-}
+};
 
 #endif

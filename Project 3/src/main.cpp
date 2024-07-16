@@ -1,6 +1,10 @@
 #include <iostream>
 #include <fstream>
 #include <windows.h>
+#include "Headers\GraphStructure.h"
+#include "Headers\Vertex.h"
+#include "Headers\CustomPriorityQueue.h"
+#include "Headers\Region.h"
 using namespace std; 
 
 int main() {
@@ -26,7 +30,7 @@ int main() {
 
     if(!(resp == "X" || resp == "x")) {
         int x = stoi(resp);
-        if(outfile.is_open())
+        if(outfile.is_open()) 
             outfile << resp << endl;
     }
 

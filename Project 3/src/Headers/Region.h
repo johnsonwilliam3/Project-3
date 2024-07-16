@@ -1,6 +1,5 @@
-#define REGION_DEF
-#ifndef REGION_DEF
-
+#ifndef REGION_H
+#define REGION_H
 class Region {
     public:
     Region();
@@ -9,6 +8,6 @@ class Region {
     
     private:
     double ideal_index;
-}
+};
 
 #endif

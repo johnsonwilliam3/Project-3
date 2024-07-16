@@ -1,5 +1,7 @@
-#define VERTEX_DEF
-#ifndef VERTEX_DEF
+#ifndef VERTEX_H
+#define VERTEX_H
+
+#include <vector>
 
 class Vertex {
     public:
@@ -7,7 +9,7 @@ class Vertex {
     int value;
 
     private:
-    vector<pair<Vertex*, double>> adjacencyList;
-}
+    std::vector<std::pair<Vertex*, double>> adjacencyList;
+};
 
 #endif
