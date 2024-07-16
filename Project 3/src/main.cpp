@@ -26,7 +26,7 @@ int main() {
 
     if(!(resp == "X" || resp == "x")) {
         int x = stoi(resp);
-        if(outfile.is_open()
+        if(outfile.is_open())
             outfile << resp << endl;
     }
 

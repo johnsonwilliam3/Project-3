@@ -1,3 +1,6 @@
+#define REGION_DEF
+#ifndef REGION_DEF
+
 class Region {
     public:
     Region();
@@ -7,3 +10,5 @@ class Region {
     private:
     double ideal_index;
 }
+
+#endif
