@@ -18,6 +18,7 @@ class CustomPriorityQueue {
     ~CustomPriorityQueue();
     void insert(Region* r);
     Region* extract();
+    void printHeap();
 };
 
 #endif

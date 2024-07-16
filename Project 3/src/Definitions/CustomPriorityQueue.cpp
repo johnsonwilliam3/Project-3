@@ -92,7 +92,7 @@ void CustomPriorityQueue::insert(Region* r) {
     }
 }
 
-Region* extract() {
+CustomPriorityQueue::Region* extract() {
     Region* extraction = heap[0];
     heap[0] = heap[size - 1];
     size--;
@@ -106,5 +106,11 @@ Region* extract() {
 
         delete[] heap;
         heap = copy;
+    }
+}
+
+void CustomPriorityQueue::printHeap() {
+    for(int i = 0; i < size; i++) {
+        std::cout << heap[i]->getIdealIndex() << std::endl;
     }
 }

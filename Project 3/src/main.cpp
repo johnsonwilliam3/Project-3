@@ -10,6 +10,7 @@ using namespace std;
 int main() {
     cout << "Welcome to the Program" << endl << endl;
     Sleep(1000);
+    system("cls");
     cout << "1. XXX" << endl;
     cout << "2. XXX" << endl;
     cout << "3. XXX" << endl;
@@ -19,11 +20,12 @@ int main() {
     cout << "7. XXX" << endl;
     cout << "8. XXX" << endl;
     cout << "9. XXX" << endl;
-    cout << "e<X>it" << endl;
-    cout << endl << "Select a region to analyze: ";
+    cout << "E[X]IT" << endl;
+    cout << "Select a region to analyze: ";
 
     string resp;
     cin >> resp; 
+    int numResp; 
 
     ofstream outfile;
     outfile.open("output\\output.txt");
@@ -31,12 +33,33 @@ int main() {
     if(!(resp == "X" || resp == "x")) {
         int x = stoi(resp);
         if(outfile.is_open()) 
-            outfile << resp << endl;
+            outfile << resp <<  endl;
+
+        Sleep(1500);
+        system("cls");
+        cout << "1. Graph" << endl;
+        cout << "2. Heap-Based Priority Queue" << endl;
+        cout << "Select a data structure to utilize: " << endl;
+        cin >> numResp;
+
+        if(numResp == 1) {
+            outfile << "Graph" << endl; 
+        } 
+
+        else {
+            outfile << "Priority Queue" << endl;
+        }
+
+        outfile.close();
+        system("py PythonFiles\\main.py");
+
+
     }
 
     else {
         cout << endl << "Exiting..." << endl;
         Sleep(3000);
+        system("cls");
     }
 
     outfile.close();
