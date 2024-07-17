@@ -13,8 +13,8 @@ Custom Priority Queue in the works. Based on a max heap which is implented using
 I'm currently not entirely sure how we wan to utilize these ADTs so they only have basic functionality
 Dynamic Memory functionality included (Copy Constructor, assignment operator, destructor)
 
-Windows specific commands are currently in use (Sleep)
-Let me know if you use Mac or Linux and Ill add Preprocessor Directives to adjust for other OSs
+Windows specific commands are currently in use (Sleep) - Resolved
+Let me know if you use Mac or Linux and Ill add Preprocessor Directives to adjust for other OSs - Resolved
 
 After the program is done running, it calls a command to run a python program before shutting down
 This can be used to load output data from the c++ program and run an interactive map.

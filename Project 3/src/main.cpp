@@ -1,15 +1,30 @@
 #include <iostream>
 #include <fstream>
-#include <windows.h>
+#ifdef _WIN32
+    #include <windows.h>
+#endif
+
+#ifdef __APPLE__
+    #include <unistd.h>
+#endif
+
 #include "Headers\GraphStructure.h"
 #include "Headers\Vertex.h"
 #include "Headers\CustomPriorityQueue.h"
 #include "Headers\Region.h"
 using namespace std; 
 
+void delay(int milliseconds) {
+    #if defined(_WIN32)
+        Sleep(milliseconds);
+    #elif defined(__APPLE__)
+        nanosleep(milliseconds * 1000);
+    #endif
+}
+
 int main() {
     cout << "Welcome to the Program" << endl << endl;
-    Sleep(1000);
+    delay(1000);
     system("cls");
     cout << "1. XXX" << endl;
     cout << "2. XXX" << endl;
@@ -35,7 +50,7 @@ int main() {
         if(outfile.is_open()) 
             outfile << resp <<  endl;
 
-        Sleep(1500);
+        delay(1500);
         system("cls");
         cout << "1. Graph" << endl;
         cout << "2. Heap-Based Priority Queue" << endl;
@@ -58,7 +73,7 @@ int main() {
 
     else {
         cout << endl << "Exiting..." << endl;
-        Sleep(3000);
+        delay(3000);
         system("cls");
     }
 
