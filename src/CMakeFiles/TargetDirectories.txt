@@ -1,0 +1,3 @@
+/Users/angel/Downloads/traffic/Project 3/src/CMakeFiles/myproject.dir
+/Users/angel/Downloads/traffic/Project 3/src/CMakeFiles/edit_cache.dir
+/Users/angel/Downloads/traffic/Project 3/src/CMakeFiles/rebuild_cache.dir
