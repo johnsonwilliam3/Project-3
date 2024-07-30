@@ -14,9 +14,8 @@
 #endif
 
 #include "Headers\GraphStructure.h"
-#include "Headers\Vertex.h"
 #include "Headers\CustomPriorityQueue.h"
-#include "Headers\Region.h"
+#include "Headers\Algorithm.h" //Contains algorithm namespace
 using namespace std; 
 
 void delay(int milliseconds) {
@@ -26,6 +25,7 @@ void delay(int milliseconds) {
         nanosleep(milliseconds * 1000);
     #endif
 }
+
 void loadData(GraphStructure& gs, ifstream& file );
 
 string generateKey(string city, string county, string state){ 

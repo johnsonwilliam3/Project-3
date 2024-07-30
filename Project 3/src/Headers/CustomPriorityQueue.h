@@ -1,13 +1,13 @@
 #ifndef PQ_H
 #define PQ_H
 
-#include "Region.h"
+#include "GraphStructure.h"
 
 class CustomPriorityQueue {
     private:
     void heapifyUp(int index);
     void heapifyDown(int index);
-    Region** heap[4];
+    City** heap[4];
     int size;
     int capacity;
 
@@ -16,7 +16,7 @@ class CustomPriorityQueue {
     CustomPriorityQueue(const CustomPriorityQueue& pq);
     operator=(const CustomPriorityQueue& pq);
     ~CustomPriorityQueue();
-    void insert(Region* r);
+    void insert(City* c);
     Region* extract();
     void printHeap();
 };
