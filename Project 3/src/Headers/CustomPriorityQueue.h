@@ -17,7 +17,6 @@ class CustomPriorityQueue {
     operator=(const CustomPriorityQueue& pq);
     ~CustomPriorityQueue();
     void insert(City* c);
-    Region* extract();
     void printHeap();
 };
 

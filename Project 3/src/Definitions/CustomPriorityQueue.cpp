@@ -3,13 +3,11 @@
 CustomPriorityQueue::CustomPriorityQueue() {
     size = 0;
     capacity = 4;
-    heap = new Region*[4];
 }
 
 CustomPriorityQueue::CustomPriorityQueue(const CustomPriorityQueue& pq) {
     size = pq.size;
     capacity = pq.capacity;
-    heap = new Region*[capacity];
     for(int i = 0; i < size; i++) {
         heap[i] = pq.heap[i];
     }
@@ -18,7 +16,6 @@ CustomPriorityQueue::CustomPriorityQueue(const CustomPriorityQueue& pq) {
 CustomPriorityQueue::operator=(const CustomPriorityQueue& pq) {
     size = pq.size;
     capacity = pq.capacity;
-    heap = new Region*[capacity];
     for(int i = 0; i < size; i++) {
         heap[i] = pq.heap[i];
     }
