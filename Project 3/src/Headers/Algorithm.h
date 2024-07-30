@@ -1,3 +1,6 @@
+#ifndef ALGORITHM_H
+#define ALGORITHM_H
+
 #include <cmath>
 #include <map>
 #include <string>
@@ -177,7 +180,7 @@ namespace algorithm {
         return importantNodes;
     }
 
-    float findMean( const GraphStructure& gs){
+    float findMean( const GraphStructure& gs) {
         int size = gs.adjList.size();
         float total = 0;
 
@@ -206,7 +209,9 @@ namespace algorithm {
         return sqrtf(variance);
     }
 
-    float normalize(float rank, float mean, float std){
+    float normalize(float rank, float mean, float std) {
         return  (rank - mean) / std;
     }
 }
+
+#endif
