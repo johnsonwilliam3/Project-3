@@ -16,6 +16,7 @@
 #endif
 
 #include "Headers/GraphStructure.h"
+#include "Headers/Algorithm.h"
 
 using namespace std; 
 
@@ -27,8 +28,8 @@ int main() {
     cout << "Welcome to the Program" << endl;
     delay(1000);
     
-    ifstream file("/input/data.csv"); //Filestreams open files relative to the project root folder. It's weird.
-    if(file.is_open()) { std::cerr << "File Open"; }
+    ifstream file("input/data.csv"); //Filestreams open files relative to the project root folder. It's weird.
+    if(file.is_open()) { std::cerr << "File Open" << endl; } else { std::cerr << "Not open" << endl;}
     map<int, vector<string>> mp;
     GraphStructure graph;
 
@@ -39,7 +40,8 @@ int main() {
     getline(file, header);
     
     loadData(graph, file); //loading data into a graph
-    GraphStructure::findFinalRank(graph);
+    Algorithm::findFinalRank(graph);
+    graph.PrintToFile();
 
     /*
     system("cls");
@@ -101,9 +103,12 @@ int main() {
 
     return 0;
 }
+
 void loadData(GraphStructure& graph, ifstream& file){
     string line;
     int counter = -1;
+
+    //Iterate through each line
     while(getline(file, line)){
         stringstream ss(line);  
         string cell;
@@ -115,25 +120,26 @@ void loadData(GraphStructure& graph, ifstream& file){
             dest_city_s, dest_state_s, severity, change_2020_23,
             const_cost_rank;
 
+        //Iterate through each cell and set temporary variables
         while(getline(ss, cell, ',')){
             switch(counter) {
                 case(0): city = cell; break;
                 case(1): county = cell; break;
                 case(2): state = cell; break;
                 case(3): zip = cell; break;
-                case(4): start_lat = cell;break;
+                case(4): start_lat = cell; break;
                 case(5): start_lng = cell; break;
                 case(6): north_lat = cell; break;
                 case(7): north_lng = cell; break;
                 case(8): east_lat = cell; break;
                 case(9): east_lng = cell; break;
-                case(10): west_lat = cell;break;
+                case(10): west_lat = cell; break;
                 case(11): west_lng = cell; break;
                 case(12): south_lat = cell; break;
                 case(13): south_lng = cell; break;
                 case(14): dest_city_n = cell; break;
                 case(15): dest_state_n = cell; break;
-                case(16): dest_city_w = cell;  break;
+                case(16): dest_city_w = cell; break;
                 case(17): dest_state_w = cell; break;
                 case(18): dest_city_e = cell; break;
                 case(19): dest_state_e = cell; break;
@@ -141,43 +147,45 @@ void loadData(GraphStructure& graph, ifstream& file){
                 case(21): dest_state_s = cell; break;
                 case(22): severity = cell; break;
                 case(23): change_2020_23 = cell; break;
-                case(24): const_cost_rank = cell;  break;
+                case(24): const_cost_rank = cell; break;
                 default: break;
             }
 
+            //Move to next cell
             counter++;
         }
 
-        shared_ptr<City> city1 = make_shared<City>(city, county, state, stof(start_lat), stof(start_lng),  stoi(severity), stoi(change_2020_23), 49-stoi(const_cost_rank));
+        shared_ptr<City> city1 = make_shared<City>(city, county, state, stof(start_lat), stof(start_lng), stoi(severity), stoi(change_2020_23), 49 - stoi(const_cost_rank));
         string city1_key = generateKey(city, county, state);
         graph.addToMap(city1_key, city1);
+
         if(dest_city_n != "NA" && city != dest_city_n && dest_city_n != dest_city_e
-            && dest_city_s != dest_city_n  && dest_city_n != dest_city_w) {   
-            string city2_key = generateKey(dest_city_n, county, state );
-            shared_ptr<City> city2 = make_shared<City>(dest_city_n, county, dest_state_n, stof(north_lat), stof(north_lng),  stoi(severity), stoi(change_2020_23), 49-stoi(const_cost_rank));
+            && dest_city_s != dest_city_n && dest_city_n != dest_city_w) {   
+            string city2_key = generateKey(dest_city_n, county, state);
+            shared_ptr<City> city2 = make_shared<City>(dest_city_n, county, dest_state_n, stof(north_lat), stof(north_lng),  stoi(severity), stoi(change_2020_23), 49 - stoi(const_cost_rank));
             graph.addToMap(city2_key, city2);
             graph.addEdge(city1_key, city2_key, city1, city2);
         }
 
-        if(dest_city_w != "NA" && city != dest_city_w && dest_city_w!=dest_city_e
-            && dest_city_w != dest_city_n  && dest_city_s != dest_city_w ) {
-            shared_ptr<City> city3 = make_shared<City>(dest_city_w, county, state, stof(west_lat), stof(west_lng),  stoi(severity), stoi(change_2020_23), 49-stoi(const_cost_rank));
+        if(dest_city_w != "NA" && city != dest_city_w && dest_city_w != dest_city_e
+            && dest_city_w != dest_city_n && dest_city_s != dest_city_w) {
+            shared_ptr<City> city3 = make_shared<City>(dest_city_w, county, state, stof(west_lat), stof(west_lng), stoi(severity), stoi(change_2020_23), 49 - stoi(const_cost_rank));
             string city3_key = generateKey(dest_city_w, county, state);
             graph.addToMap(city3_key, city3);
             graph.addEdge(city1_key, city3_key, city1, city3);
         }
 
         if(dest_city_e != "NA" && city != dest_city_e && dest_city_e != dest_city_w
-            && dest_city_e != dest_city_n  && dest_city_e != dest_city_s ) {
-            shared_ptr<City> city4 = make_shared<City>(dest_city_e, county, state, stof(east_lat), stof(east_lng), stoi(severity), stoi(change_2020_23), 49-stoi(const_cost_rank));
+            && dest_city_e != dest_city_n  && dest_city_e != dest_city_s) {
+            shared_ptr<City> city4 = make_shared<City>(dest_city_e, county, state, stof(east_lat), stof(east_lng), stoi(severity), stoi(change_2020_23), 49 - stoi(const_cost_rank));
             string city4_key = generateKey(dest_city_e, county, state);
             graph.addToMap(city4_key, city4);
             graph.addEdge(city1_key, city4_key, city1, city4);
         }
 
         if(dest_city_s != "NA" && city != dest_city_s && dest_city_s != dest_city_e
-            && dest_city_s != dest_city_n  && dest_city_s != dest_city_w ) { 
-            shared_ptr<City> city5 = make_shared<City>(dest_city_s, county, state, stof(south_lat), stof(south_lng),  stoi(severity), stoi(change_2020_23), 49-stoi(const_cost_rank));
+            && dest_city_s != dest_city_n && dest_city_s != dest_city_w) { 
+            shared_ptr<City> city5 = make_shared<City>(dest_city_s, county, state, stof(south_lat), stof(south_lng), stoi(severity), stoi(change_2020_23), 49 - stoi(const_cost_rank));
             string city5_key = generateKey(dest_city_s, county, state);
             graph.addToMap(city5_key, city5);
             graph.addEdge(city1_key, city5_key, city1, city5 );

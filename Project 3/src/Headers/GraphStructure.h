@@ -93,8 +93,6 @@ class GraphStructure {
     static std::unordered_map<std::string, int> filterOutNodesBasedOnRank(GraphStructure& gs);
     static float findMean(GraphStructure& gs);
     static float findSTD(GraphStructure& gs, int mean);
-    static float normalize(float rank, float mean, float std);
-
 
     public:
     GraphStructure();
@@ -103,8 +101,10 @@ class GraphStructure {
     static void findFinalRank(GraphStructure& gs);
     void PrintGraph();
     void PrintMapAlphabetic();
+    void PrintToFile();
     std::unordered_map<std::string, int> outDegree();
     const int edgeCount();
+    friend class Algorithm;
 };
 
 #endif
