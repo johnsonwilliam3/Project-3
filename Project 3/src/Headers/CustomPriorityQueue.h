@@ -1,13 +1,14 @@
 #ifndef PQ_H
 #define PQ_H
 
+#include <memory>
 #include "GraphStructure.h"
 
 class CustomPriorityQueue {
     private:
     void heapifyUp(int index);
     void heapifyDown(int index);
-    City** heap[4];
+    shared_ptr<City>* heap[4];
     int size;
     int capacity;
 
@@ -16,8 +17,9 @@ class CustomPriorityQueue {
     CustomPriorityQueue(const CustomPriorityQueue& pq);
     operator=(const CustomPriorityQueue& pq);
     ~CustomPriorityQueue();
-    void insert(City* c);
+    void insert(shared_ptr<City> c);
     void printHeap();
+    shared_ptr<City>* extract(); 
 };
 
 #endif

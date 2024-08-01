@@ -29,10 +29,10 @@ void CustomPriorityQueue::heapifyUp(int index) {
     Region* r = heap[index];
     int parentIndex = (size - 1) / 2;
     if(parentIndex >= 0) {
-        Region* parent = heap[parentIndex];
-        if(r->getIdealIndex() > parent->getIdealIndex()) {
+        City* parent = heap[parentIndex];
+        if(r->getIdealIndex() > parent->getFinalIndex()) {
             //Swap
-            Region* temp = heap[index];
+            City* temp = heap[index];
             heap[index] = heap[parentIndex];
             heap[parentIndex] = temp;
             heapify(parentIndex);
@@ -56,7 +56,7 @@ void CustomPriorityQueue::heapifyDown(int index) {
 
     if(largestChildIndex > index) {
             //Swap
-            Region* temp = heap[index];
+            shared_ptr<City> temp = heap[index];
             heap[index] = heap[largestChildIndex];
             heap[largestChildIndex] = temp;
             heapifyDown(largestChildIndex);
@@ -64,12 +64,12 @@ void CustomPriorityQueue::heapifyDown(int index) {
     }
 }
 
-void CustomPriorityQueue::insert(Region* r) {
+void CustomPriorityQueue::insert(shared_ptr<City> c) {
     heap[size] = r;
     heapifyUp(size);
     size++; 
     if(size == capacity) {
-        Region** copy = new Region*[capacity * 2];
+        shared_ptr<City>* copy = new shared_ptr<City>[capacity * 2];
         for(int i = 0; i < size; i++) {
             copy[i] = heap[i];
         }
@@ -79,7 +79,7 @@ void CustomPriorityQueue::insert(Region* r) {
     }
 
     else if(size <= capacity / 2 && capacity > 4) {
-        Region** copy = new Region*[capacity / 2];
+        shared_ptr<City>* copy = new shared_ptr<City>[capacity / 2];
         for(int i = 0; i < size; i++) {
             copy[i] = heap[i];
         }
@@ -89,14 +89,14 @@ void CustomPriorityQueue::insert(Region* r) {
     }
 }
 
-CustomPriorityQueue::Region* extract() {
+CustomPriorityQueue::shared_ptr<City> extract() {
     Region* extraction = heap[0];
     heap[0] = heap[size - 1];
     size--;
     heapifyDown(0);
 
     if(size <= capacity / 2 && capacity > 4) {
-        Region** copy = new Region*[capacity / 2];
+        shared_ptr<City>* copy = new shared_ptr<City>[capacity / 2];
         for(int i = 0; i < size; i++) {
             copy[i] = heap[i];
         }
@@ -108,6 +108,6 @@ CustomPriorityQueue::Region* extract() {
 
 void CustomPriorityQueue::printHeap() {
     for(int i = 0; i < size; i++) {
-        std::cout << heap[i]->getIdealIndex() << std::endl;
+        std::cout << heap[i]->getFinalIndex()) << std::endl;
     }
 }

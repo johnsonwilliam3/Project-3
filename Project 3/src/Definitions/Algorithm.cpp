@@ -191,3 +191,15 @@ float Algorithm::findSTD(GraphStructure& gs, int mean) { //Standard Deviation
     float variance = size > 0 ? total / size : 0.0; 
     return sqrtf(variance);
 }
+
+//I need to figure out how I want to output/use this data. Coming soon - William
+void Algorithm::extractN(GraphStructure& gs, int N) {
+    CustomPriorityQueue pq; 
+    for(auto node : gs.id_city) {
+        pq.insert(node.second);
+    }
+
+    for(int i = 0; i < N; i++) {
+        shared_ptr<City> c = pq.extract();
+    }
+}

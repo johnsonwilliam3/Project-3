@@ -8,9 +8,9 @@
 #include <vector>
 
 struct Rank {
-    int congestion_rank;
-    int population_prediction;
-    int construction_rank; 
+    int congestion_rank = 0;
+    int population_prediction = 0;
+    int construction_rank = 0; 
     int centrality = 0;
     void update_rank(int congest_rank, int pop_pred, int constr_rank ){};
     Rank(int congestionRank, int populationPrediction, int constructionRank)
@@ -98,7 +98,6 @@ class GraphStructure {
     GraphStructure();
     void addToMap(std::string key, std::shared_ptr<City> city); 
     void addEdge(std::string origin_key, std::string dest_key, std::shared_ptr<City> origin, std::shared_ptr<City> dest);
-    static void findFinalRank(GraphStructure& gs);
     void PrintGraph();
     void PrintMapAlphabetic();
     void PrintToFile();
