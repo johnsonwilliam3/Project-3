@@ -56,7 +56,7 @@ void Algorithm::findBetweennessCentrality(GraphStructure& gs, GraphStructure& su
 
             if (w != src.first) {
                 betweenness_centrality[w] += dependency[w];
-                std::cout << w << ": " << dependency[w] << std::endl;
+                //std::cout << w << ": " << dependency[w] << std::endl;
             }
         }
     }

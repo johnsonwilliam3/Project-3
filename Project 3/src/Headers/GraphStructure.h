@@ -29,9 +29,9 @@ class City {
    
     public:
     void updateRank(int congest_rank, float pop_pred, int constr_rank){
-        rank.congestion_rank+=congest_rank;
-        rank.population_prediction +=pop_pred;
-        rank.construction_rank+=constr_rank;
+        rank.congestion_rank += congest_rank;
+        rank.population_prediction += pop_pred;
+        rank.construction_rank += constr_rank;
     }
 
     City(std::string cty, std::string County, std::string State, float Lat, float rnk, int congest_rank, float pop_pred, int constr_rank)

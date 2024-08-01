@@ -101,6 +101,8 @@ int main() {
 
     file.close();
 
+    system("py PythonFiles/main.py");
+
     return 0;
 }
 
