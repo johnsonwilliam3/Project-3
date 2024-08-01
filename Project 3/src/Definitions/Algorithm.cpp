@@ -115,7 +115,7 @@ void Algorithm::findFinalRank(GraphStructure& gs) {
 
     while(!pq.empty() && i < 100) {
         auto front = pq.top();
-        //std::cout << ++i << "City " << front.second << " with a final rank of " << front.first << std::endl;
+        //std::cout << ++i << . City " << front.second << " with a final rank of " << front.first << std::endl;
         pq.pop();
     }
 }
