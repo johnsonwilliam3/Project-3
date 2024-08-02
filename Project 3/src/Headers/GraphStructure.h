@@ -102,7 +102,7 @@ class GraphStructure {
     void PrintMapAlphabetic();
     void PrintToFile();
     std::unordered_map<std::string, int> outDegree();
-    std::unordered_map<std::string, std::shared_ptr<City>> getCities();
+    std::unordered_map<std::string, std::shared_ptr<City>>& getCities();
     const int edgeCount();
     friend class Algorithm;
 };
