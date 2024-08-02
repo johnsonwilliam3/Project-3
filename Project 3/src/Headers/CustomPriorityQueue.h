@@ -2,6 +2,7 @@
 #define PQ_H
 
 #include <memory>
+#include <algorithm>
 #include "GraphStructure.h"
 
 class CustomPriorityQueue {
@@ -19,7 +20,8 @@ class CustomPriorityQueue {
     ~CustomPriorityQueue();
     void insert(shared_ptr<City> c);
     void printHeap();
-    shared_ptr<City>* extract(); 
+    shared_ptr<City>* extract();
+    shared_ptr<City>* requestNCitites(const int n);
 };
 
 #endif
