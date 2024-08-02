@@ -111,3 +111,12 @@ void CustomPriorityQueue::printHeap() {
         std::cout << heap[i]->getFinalIndex()) << std::endl;
     }
 }
+
+shared_ptr<City>* CustomPriorityQueue::requestNCities(const int n){
+    int numOfCities = std::min(n, size);
+    shared_ptr<City>* ans = new shared_ptr<City>[numOfCities];
+    for(int i = 0; i < numOfCities; i++) { 
+        ans[i] = heap[i];
+    }
+    return ans;
+}
