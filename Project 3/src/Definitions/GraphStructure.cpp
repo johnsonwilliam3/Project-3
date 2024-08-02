@@ -77,3 +77,6 @@ std::unordered_map<std::string, int> GraphStructure::outDegree(){
 const int GraphStructure::edgeCount() {
     return adjList.size();
 }
+std::unordered_map<std::string, std::shared_ptr<City>>& getCities(){
+    return id_city&;
+}
