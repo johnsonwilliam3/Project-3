@@ -176,7 +176,8 @@ float Algorithm::findMean(GraphStructure& gs) {
 
     std::unordered_map<std::string, std::shared_ptr<City>> cities = gs.getCities();
     for(auto node : cities) {
-        int current = node.second->getCongestRank();  //redo: for final processing need to use in normalization for all 5 componenets of rank - centrality, congestion, constr and popluation growth
+        // This is the new implementation to be in accordance with the findFinalRank function
+        auto current = node.second->getCentrality() * 0.2 + node.second->getCongestRank() * 0.8;  //redo: for final processing need to use in normalization for all 5 componenets of rank - centrality, congestion, constr and popluation growth
         total += current;
     }
 
@@ -188,8 +189,10 @@ float Algorithm::findSTD(GraphStructure& gs, int mean) { //Standard Deviation
     float difference;
     float total = 0;
 
-    for(auto node : gs.id_city) {
-        auto current = node.second->getCongestRank(); //for final processing need to use in normalization for all 3 componenets of rank, redo 
+    std::unordered_map<std::string, std::shared_ptr<City>> cities = gs.getCities();
+    for(auto node : cities) {
+        // This has also been changed to be in accordance with the new findFinalRank function
+        auto current = node.second->getCentrality() * 0.2 + node.second->getCongestRank() * 0.8; //for final processing need to use in normalization for all 3 componenets of rank, redo 
         difference= current - mean;
         total += difference * difference; //difference^2
     }
