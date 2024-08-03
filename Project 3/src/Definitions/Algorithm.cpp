@@ -109,7 +109,7 @@ void Algorithm::findFinalRank(GraphStructure& gs) {
         int normalizedRank = node.second->getCentrality() * 0.2 + node.second->getCongestRank() * 0.8; //(rank.centrality*0.2+rank.congestion_rank*0.6 + rank.construction_rank*0.1+rank.population_prediction*0.1);
         auto final = (normalizedRank - MEAN) / STD;
         node.second->setFinalRank(final * 10); //updates the graph
-        pq.push(std::make_pair((int) node.second->getFinalIndex(), node.first));  //updates the priority queue
+        // pq.push(std::make_pair((int) node.second->getFinalIndex(), node.first));  //updates the priority queue
     }
 
     /*
