@@ -55,6 +55,7 @@ void Algorithm::findBetweennessCentrality(GraphStructure& gs, GraphStructure& su
 
             if (w != src.first) {
                 betweenness_centrality[w] += dependency[w];
+                // This line is used for debugging
                 //std::cout << w << ": " << dependency[w] << std::endl;
             }
         }
@@ -100,15 +101,17 @@ void Algorithm::findFinalRank(GraphStructure& gs) {
     findImportantNodes(gs);
     const float MEAN = Algorithm::findMean(gs); //will only compute 
     const float STD = Algorithm::findSTD(gs, MEAN);
-    std::priority_queue<std::pair<int, std::string>, std::vector<std::pair<int, std::string>>, std::less<std::pair<int, std::string>>> pq;
-    
-    for(auto node : gs.id_city){
+    // This line is disabled as it is only required for debugging and is unnecessary for the functions intended purpose
+    // std::priority_queue<std::pair<int, std::string>, std::vector<std::pair<int, std::string>>, std::less<std::pair<int, std::string>>> pq;
+    std::unordered_map<std::string, std::shared_ptr<City>> cities = gs.getCities();
+    for(auto node : cities){
         int normalizedRank = node.second->getCentrality() * 0.2 + node.second->getCongestRank() * 0.8; //(rank.centrality*0.2+rank.congestion_rank*0.6 + rank.construction_rank*0.1+rank.population_prediction*0.1);
         auto final = (normalizedRank - MEAN) / STD;
         node.second->setFinalRank(final * 10); //updates the graph
-        pq.push(std::make_pair((int) node.second->getFinalIndex(), node.first));  //updates the priority queue
+        // pq.push(std::make_pair((int) node.second->getFinalIndex(), node.first));  //updates the priority queue
     }
 
+    /*
     //for testing purpose 
     int i = 0;
 
@@ -117,6 +120,7 @@ void Algorithm::findFinalRank(GraphStructure& gs) {
         //std::cout << ++i << . City " << front.second << " with a final rank of " << front.first << std::endl;
         pq.pop();
     }
+    */
 }
 
 
@@ -147,7 +151,8 @@ std::unordered_map<std::string, int> Algorithm::filterOutNodesBasedOnRank(GraphS
     const float STD = findSTD(gs, MEAN);
     std::priority_queue<std::pair<int, std::string>, std::vector<std::pair<int, std::string>>, std::less<std::pair<int, std::string>>> pq;
 
-    for(auto node : gs.id_city){
+    std::unordered_map<std::string, std::shared_ptr<City>> cities = gs.getCities();
+    for(auto node : cities){
         float norm_rank = (node.second->getCongestRank() - MEAN) / STD;
         pq.push(std::make_pair((int) norm_rank * 10, node.first));
     }
@@ -169,8 +174,10 @@ float Algorithm::findMean(GraphStructure& gs) {
     int size = gs.edgeCount();
     float total = 0;
 
-    for(auto node : gs.id_city) {
-        int current = node.second->getCongestRank();  //redo: for final processing need to use in normalization for all 5 componenets of rank - centrality, congestion, constr and popluation growth
+    std::unordered_map<std::string, std::shared_ptr<City>> cities = gs.getCities();
+    for(auto node : cities) {
+        // This is the new implementation to be in accordance with the findFinalRank function
+        auto current = node.second->getCentrality() * 0.2 + node.second->getCongestRank() * 0.8;  //redo: for final processing need to use in normalization for all 5 componenets of rank - centrality, congestion, constr and popluation growth
         total += current;
     }
 
@@ -182,8 +189,10 @@ float Algorithm::findSTD(GraphStructure& gs, int mean) { //Standard Deviation
     float difference;
     float total = 0;
 
-    for(auto node : gs.id_city) {
-        auto current = node.second->getCongestRank(); //for final processing need to use in normalization for all 3 componenets of rank, redo 
+    std::unordered_map<std::string, std::shared_ptr<City>> cities = gs.getCities();
+    for(auto node : cities) {
+        // This has also been changed to be in accordance with the new findFinalRank function
+        auto current = node.second->getCentrality() * 0.2 + node.second->getCongestRank() * 0.8; //for final processing need to use in normalization for all 3 componenets of rank, redo 
         difference= current - mean;
         total += difference * difference; //difference^2
     }
