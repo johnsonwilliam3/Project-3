@@ -15,7 +15,7 @@ class Algorithm {
     static std::unordered_map<std::string, int> filterOutNodesBasedOnRank(GraphStructure& gs);
     static float findMean(GraphStructure& gs);
     static float findSTD(GraphStructure& gs, int mean);
-    static void extractN(GraphStructure& gs); 
+    static float normalizedWeight(GraphStructure& gs);
 };
 
 #endif

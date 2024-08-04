@@ -3,7 +3,6 @@
 #include <memory>
 #include <queue>
 #include "../Headers/Algorithm.h"
-#include "../Headers/GraphStructure.h"
 
 void Algorithm::findBetweennessCentrality(GraphStructure& gs, GraphStructure& subgraph) {
     std::unordered_map<std::string, float> betweenness_centrality;
@@ -165,6 +164,7 @@ std::unordered_map<std::string, int> Algorithm::filterOutNodesBasedOnRank(GraphS
     return importantNodes;
 }
 
+//Update
 float Algorithm::findMean(GraphStructure& gs) {
     int size = gs.edgeCount();
     float total = 0;
@@ -192,14 +192,6 @@ float Algorithm::findSTD(GraphStructure& gs, int mean) { //Standard Deviation
     return sqrtf(variance);
 }
 
-//I need to figure out how I want to output/use this data. Coming soon - William
-void Algorithm::extractN(GraphStructure& gs, int N) {
-    CustomPriorityQueue pq; 
-    for(auto node : gs.id_city) {
-        pq.insert(node.second);
-    }
-
-    for(int i = 0; i < N; i++) {
-        shared_ptr<City> c = pq.extract();
-    }
+float Algorithm::normalizedWeight(GraphStructure* gs) {
+    return 1.0;
 }

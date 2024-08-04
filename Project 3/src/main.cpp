@@ -43,7 +43,6 @@ int main() {
     Algorithm::findFinalRank(graph);
     graph.PrintToFile();
 
-    /*
     system("cls");
     cout << "1. XXX" << endl;
     cout << "2. XXX" << endl;
@@ -61,33 +60,15 @@ int main() {
     cin >> resp; 
     int numResp; 
 
-    ofstream outfile;
-    outfile.open("output\\output.txt");
-
+    string pythonControlPath = "output/data.json";
+    ofstream f(pythonControlPath);
     if(!(resp == "X" || resp == "x")) {
         int x = stoi(resp);
-        if(outfile.is_open()) 
-            outfile << resp <<  endl;
-
-        delay(1500);
-        system("cls");
-        cout << "1. Graph" << endl;
-        cout << "2. Heap-Based Priority Queue" << endl;
-        cout << "Select a data structure to utilize: " << endl;
-        cin >> numResp;
-
-        if(numResp == 1) {
-            outfile << "Graph" << endl; 
-        } 
-
-        else {
-            outfile << "Priority Queue" << endl;
+        if(f.is_open()) {
+            f << x << endl;
         }
 
-        outfile.close();
         system("py PythonFiles\\main.py");
-
-
     }
 
     else {
@@ -96,10 +77,8 @@ int main() {
         system("cls");
     }
 
-    outfile.close();
-    */
-
     file.close();
+    f.close();
 
     system("py PythonFiles/main.py");
 

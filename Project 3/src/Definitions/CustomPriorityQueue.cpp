@@ -114,12 +114,15 @@ void CustomPriorityQueue::printHeap() {
 
 shared_ptr<City>* CustomPriorityQueue::requestNCities(GraphStructure& graph, const int n){
     std::unordered_map<std::string, std::shared_ptr<City>>& cities = graph.getCities();
+    
     for (const auto& pair : cities){
         insert(pair.second);
     }
     std::shared_ptr<City>* cityArr = new std::shared_ptr<City>[n];
+
     for(int i = 0; i < n; ++i){
         cityArr[i] = extract();
     }
+
     return cityArr;
 }
