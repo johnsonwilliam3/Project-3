@@ -192,7 +192,7 @@ float Algorithm::findSTD(GraphStructure& gs, int mean) { //Standard Deviation
     std::unordered_map<std::string, std::shared_ptr<City>> cities = gs.getCities();
     for(auto node : cities) {
         // This has also been changed to be in accordance with the new findFinalRank function
-         auto current = node.second->getCentrality() * 0.15 + node.second->getCongestRank() * 0.4 + node.second->getPopRank() * 0.25 + node.second->getConstrRank() * 0.2;
+        auto current = node.second->getCentrality() * 0.15 + node.second->getCongestRank() * 0.4 + node.second->getPopRank() * 0.25 + node.second->getConstrRank() * 0.2;
         total += difference * difference; //difference^2
     }
 
