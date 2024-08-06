@@ -74,6 +74,10 @@ void Algorithm::findBetweennessCentrality(GraphStructure& gs, GraphStructure& su
     }
 }
 
+void Algorithm::findMaxFlow(GraphStructure& gs) {
+
+}
+
 void Algorithm::Subgraph(GraphStructure& gs, std::unordered_map<std::string, int> topNodes) {
     GraphStructure subgraph;
 
@@ -199,8 +203,4 @@ float Algorithm::findSTD(GraphStructure& gs, int mean) { //Standard Deviation
 
     float variance = size > 0 ? total / size : 0.0; 
     return sqrtf(variance);
-}
-
-float Algorithm::normalizedWeight(GraphStructure* gs) {
-    return 1.0;
 }

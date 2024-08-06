@@ -17,7 +17,11 @@
 
 #include "Headers/GraphStructure.h"
 #include "Headers/Algorithm.h"
+#include "../rapidjson/document.h"
+#include "../rapidjson/writer.h"
+#include "../rapidjson/ostreamwrapper.h"
 
+using namespace rapidjson;
 using namespace std; 
 
 void loadData(GraphStructure& gs, ifstream& file);
@@ -26,10 +30,12 @@ void delay(int milliseconds);
 
 int main() {
     cout << "Welcome to the Program" << endl;
-    delay(1000);
+    //Sleep 500 ms, OS dependent | Guards defined
+    delay(500);
     
-    ifstream file("input/data.csv"); //Filestreams open files relative to the project root folder. It's weird.
-    if(file.is_open()) { std::cerr << "File Open" << endl; } else { std::cerr << "Not open" << endl;}
+    ifstream input("input/data.csv"); //Filestreams open files relative to the project root folder. It's weird.
+    //Test input access
+    if(input.is_open()) { std::cerr << "File Open" << endl; } else { std::cerr << "Not open" << endl;}
     map<int, vector<string>> mp;
     GraphStructure graph;
 
@@ -37,22 +43,33 @@ int main() {
     int row = 0;
     string header;
     string line;
-    getline(file, header);
+    getline(input, header);
     
-    loadData(graph, file); //loading data into a graph
-    Algorithm::findFinalRank(graph);
-    graph.PrintToFile();
+    loadData(graph, input); //loading data into a graph
+    Algorithm::findFinalRank(graph); //Calculate rank
+    graph.PrintToFile(); //Output data 
+
+    map<int, string> stateIndex;
+    stateIndex[1] = "Louisiana";
+    stateIndex[2] = "Idaho";
+    stateIndex[3] = "California";
+    stateIndex[4] = "Florida";
+    stateIndex[5] = "Texas";
+    stateIndex[6] = "Maine";
+    stateIndex[7] = "Nebraska";
+    stateIndex[8] = "Oregon";
+    stateIndex[9] = "Washington";
 
     system("cls");
-    cout << "1. XXX" << endl;
-    cout << "2. XXX" << endl;
-    cout << "3. XXX" << endl;
-    cout << "4. XXX" << endl;
-    cout << "5. XXX" << endl;
-    cout << "6. XXX" << endl;
-    cout << "7. XXX" << endl;
-    cout << "8. XXX" << endl;
-    cout << "9. XXX" << endl;
+    cout << "1. Louisiana" << endl;
+    cout << "2. Idaho" << endl;
+    cout << "3. Calfornia" << endl;
+    cout << "4. Florida" << endl;
+    cout << "5. Texas" << endl;
+    cout << "6. Maine" << endl;
+    cout << "7. Nebraska" << endl;
+    cout << "8. Oregon" << endl;
+    cout << "9. Washington" << endl;
     cout << "E[X]IT" << endl;
     cout << "Select a region to analyze: ";
 
@@ -60,27 +77,58 @@ int main() {
     cin >> resp; 
     int numResp; 
 
+    //Output path
     string pythonControlPath = "output/data.json";
-    ofstream f(pythonControlPath);
+
+    //RapidJSON initialization
+    Document jsonRoot; 
+    jsonRoot.SetObject();
+
+    //Reference the Allocator, needed often as an arg
+    Document::AllocatorType& a = jsonRoot.GetAllocator();
+
+    {
+        Value meta(kObjectType);
+        jsonRoot.AddMember("metadata", meta, a);
+    }
+
+    //Wrap ofstream class for outputting JSON
+    ofstream output(pythonControlPath);
+    OStreamWrapper jsonOutput(output);
+    Writer<OStreamWrapper> write(jsonOutput);
+
+    //If not exiting
     if(!(resp == "X" || resp == "x")) {
         int x = stoi(resp);
-        if(f.is_open()) {
-            f << x << endl;
+        if(output.is_open()) {
+            //Insert data into rapidjson::Value tyoe
+            Value resp(stateIndex[x]);
+            Value coords(kObjectType);
+            assert(jsonRoot.HasMember("metadata"));
+            //Region metadata
+            jsonRoot["metadata"].AddMember("region", resp, a);
+            double lat = 31.9;
+            double lng = -93.4;
+            //Add coordinates to json data
+            jsonRoot["metadata"].AddMember("lat", Value(lat).Move(), a);
+            jsonRoot["metadata"].AddMember("long", Value(lng).Move(), a);
+            //Send to writer
+            jsonRoot.Accept(write);
         }
-
+        
+        //Start Python Program
         system("py PythonFiles\\main.py");
     }
 
     else {
         cout << endl << "Exiting..." << endl;
-        delay(3000);
+        delay(1000);
         system("cls");
     }
 
-    file.close();
-    f.close();
-
-    system("py PythonFiles/main.py");
+    //Close file streams
+    input.close();
+    output.close();
 
     return 0;
 }

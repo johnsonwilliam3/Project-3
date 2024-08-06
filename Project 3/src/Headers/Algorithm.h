@@ -8,6 +8,7 @@
 class Algorithm {
     public:
     static void findBetweennessCentrality(GraphStructure& gs, GraphStructure& subgraph);
+    static void findMaxFlow(GraphStructure& gs);
     static void Subgraph(GraphStructure& gs, std::unordered_map<std::string, int> topNodes);
     static void findFinalRank(GraphStructure& gs);
     static void findImportantNodes(GraphStructure& gs);
@@ -15,7 +16,6 @@ class Algorithm {
     static std::unordered_map<std::string, int> filterOutNodesBasedOnRank(GraphStructure& gs);
     static float findMean(GraphStructure& gs);
     static float findSTD(GraphStructure& gs, int mean);
-    static float normalizedWeight(GraphStructure& gs);
 };
 
 #endif
