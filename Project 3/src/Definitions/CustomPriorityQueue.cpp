@@ -95,3 +95,4 @@ std::vector<std::shared_ptr<City>> CustomPriorityQueue::requestNCities(GraphStru
 
     return cityVec;
 }
+//Alter

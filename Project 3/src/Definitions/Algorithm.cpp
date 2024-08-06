@@ -57,6 +57,7 @@ void Algorithm::findBetweennessCentrality(GraphStructure& gs, GraphStructure& su
                 betweenness_centrality[w] += dependency[w];
                 // This line is used for debugging
                 //std::cout << w << ": " << dependency[w] << std::endl;
+                //Change
             }
         }
     }
