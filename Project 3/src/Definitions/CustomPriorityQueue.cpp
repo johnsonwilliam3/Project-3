@@ -38,6 +38,7 @@ void CustomPriorityQueue::heapifyUp(int index) {
             heapify(parentIndex);
         }
     }
+}
 
 
 void CustomPriorityQueue::heapifyDown(int index) {   
