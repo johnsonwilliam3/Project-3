@@ -34,6 +34,10 @@ void CustomPriorityQueue::heapifyUp(int index) {
         }
     }
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2d7b9789b03670a76f01fd119d80ab8dced2dd6f
 
 void CustomPriorityQueue::heapifyDown(int index) {   
     int largestChildIndex = index;
