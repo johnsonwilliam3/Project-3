@@ -13,12 +13,13 @@ class CustomPriorityQueue {
     void heapifyDown(int index);
     std::vector<std::shared_ptr<City>> heap;
     int size;
+    bool useDegree;
 
     public:
-    CustomPriorityQueue();
+    CustomPriorityQueue(bool _useDegree);
     CustomPriorityQueue(const CustomPriorityQueue& pq);
     CustomPriorityQueue& operator=(const CustomPriorityQueue& pq);
-    void insert(std::shared_ptr<City>& c);
+    void insert(std::shared_ptr<City>& c); 
     void printHeap();
     std::shared_ptr<City> extract();
     std::vector<std::shared_ptr<City>> requestNCities(GraphStructure& gs, const int n);

@@ -1,7 +1,8 @@
 #include "..\Headers\CustomPriorityQueue.h"
 
-CustomPriorityQueue::CustomPriorityQueue() {
+CustomPriorityQueue::CustomPriorityQueue(bool _useDegree) {
     size = 0;
+    useDegree = _useDegree;
 }
 
 CustomPriorityQueue::CustomPriorityQueue(const CustomPriorityQueue& pq) {
@@ -25,7 +26,7 @@ void CustomPriorityQueue::heapifyUp(int index) {
     int parentIndex = (size - 1) / 2;
     if(parentIndex >= 0) {
         std::shared_ptr<City> parent = heap[parentIndex];
-        if(c->getFinalIndex() > parent->getFinalIndex()) {
+        if(useDegree ? (c->getDegree() > parent->getDegree()) : (c->getFinalIndex() > parent->getFinalIndex())) {
             //Swap
             std::shared_ptr<City>& temp = heap[index];
             heap[index] = heap[parentIndex];
@@ -34,21 +35,19 @@ void CustomPriorityQueue::heapifyUp(int index) {
         }
     }
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> 2d7b9789b03670a76f01fd119d80ab8dced2dd6f
 
 void CustomPriorityQueue::heapifyDown(int index) {   
     int largestChildIndex = index;
     int leftChild = index * 2;
     int rightChild = index * 2 + 1;
 
-    if(leftChild < size && heap[leftChild]->getFinalIndex() > heap[largestChildIndex]->getFinalIndex()) {
+    if(leftChild < size && useDegree ? (heap[leftChild]->getDegree() > heap[largestChildIndex]->getDegree()) :
+    (heap[leftChild]->getFinalIndex() > heap[largestChildIndex]->getFinalIndex())) {
         largestChildIndex = leftChild; 
     }
 
-    if(rightChild < size && heap[rightChild]->getFinalIndex() > heap[largestChildIndex]->getFinalIndex()) {
+    if(rightChild < size && useDegree ? (heap[rightChild]->getDegree() > heap[largestChildIndex]->getDegree()) :
+    (heap[rightChild]->getFinalIndex() > heap[largestChildIndex]->getFinalIndex())) {
         largestChildIndex = rightChild; 
     }
 
@@ -77,7 +76,7 @@ std::shared_ptr<City> CustomPriorityQueue::extract() {
 
 void CustomPriorityQueue::printHeap() {
     for(int i = 0; i < size; i++) {
-        std::cout << heap[i]->getFinalIndex() << std::endl;
+        std::cout << (useDegree ? heap[i]->getDegree() : heap[i]->getFinalIndex()) << std::endl;
     }
 }
 

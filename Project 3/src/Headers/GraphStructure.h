@@ -92,6 +92,10 @@ class City {
     void incrementOutdegree() {
         outdegree++;
     }
+
+    int getDegree() {
+        return indegree + outdegree;
+    }
 };
 
 class GraphStructure {

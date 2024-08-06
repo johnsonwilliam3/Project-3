@@ -8,7 +8,6 @@
 class Algorithm {
     public:
     static void findBetweennessCentrality(GraphStructure& gs, GraphStructure& subgraph);
-    static void findDegree(GraphStructure& gs);
     static void Subgraph(GraphStructure& gs, std::unordered_map<std::string, int> topNodes);
     static void findFinalRank(GraphStructure& gs);
     static void findImportantNodes(GraphStructure& gs);

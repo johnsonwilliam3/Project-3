@@ -74,10 +74,6 @@ void Algorithm::findBetweennessCentrality(GraphStructure& gs, GraphStructure& su
     }
 }
 
-void Algorithm::findDegree(GraphStructure& gs) {
-
-}
-
 void Algorithm::Subgraph(GraphStructure& gs, std::unordered_map<std::string, int> topNodes) {
     GraphStructure subgraph;
 
