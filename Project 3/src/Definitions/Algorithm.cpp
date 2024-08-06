@@ -74,7 +74,7 @@ void Algorithm::findBetweennessCentrality(GraphStructure& gs, GraphStructure& su
     }
 }
 
-void Algorithm::findMaxFlow(GraphStructure& gs) {
+void Algorithm::findDegree(GraphStructure& gs) {
 
 }
 

@@ -1,3 +1,5 @@
+#define RAPIDJSON_HAS_STDSTRING 1
+
 #include <fstream>
 #include <iostream>
 #include <map>
@@ -19,6 +21,7 @@
 #include "Headers/Algorithm.h"
 #include "../rapidjson/document.h"
 #include "../rapidjson/writer.h"
+#include "../rapidjson/stringbuffer.h"
 #include "../rapidjson/ostreamwrapper.h"
 
 using namespace rapidjson;
@@ -102,7 +105,8 @@ int main() {
         int x = stoi(resp);
         if(output.is_open()) {
             //Insert data into rapidjson::Value tyoe
-            Value resp(stateIndex[x]);
+            string i = stateIndex[x];
+            Value resp(i.data(), i.size(), a);
             Value coords(kObjectType);
             assert(jsonRoot.HasMember("metadata"));
             //Region metadata

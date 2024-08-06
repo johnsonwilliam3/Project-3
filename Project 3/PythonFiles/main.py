@@ -17,6 +17,7 @@ region = meta["region"]
 m = folium.Map(location = [x, y], zoom_start = 16)
 m.save("output/map.html")
 
-webbrowser.open_new_tab(os.getcwd() + "/output/footprint.html")
+os.system("cd App")
+os.system("npm run start")
 
 read.close()
