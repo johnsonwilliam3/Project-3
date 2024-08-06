@@ -173,7 +173,6 @@ std::unordered_map<std::string, int> Algorithm::filterOutNodesBasedOnRank(GraphS
     return importantNodes;
 }
 
-//Update
 float Algorithm::findMean(GraphStructure& gs) {
     int size = gs.edgeCount();
     float total = 0;
@@ -181,7 +180,7 @@ float Algorithm::findMean(GraphStructure& gs) {
     std::unordered_map<std::string, std::shared_ptr<City>> cities = gs.getCities();
     for(auto node : cities) {
         // This is the new implementation to be in accordance with the findFinalRank function
-        auto current = node.second->getCentrality() * 0.2 + node.second->getCongestRank() * 0.8;  //redo: for final processing need to use in normalization for all 5 componenets of rank - centrality, congestion, constr and popluation growth
+        auto current = node.second->getCentrality() * 0.15 + node.second->getCongestRank() * 0.4 + node.second->getPopRank() * 0.25 + node.second->getConstrRank() * 0.2;  
         total += current;
     }
 
@@ -196,8 +195,7 @@ float Algorithm::findSTD(GraphStructure& gs, int mean) { //Standard Deviation
     std::unordered_map<std::string, std::shared_ptr<City>> cities = gs.getCities();
     for(auto node : cities) {
         // This has also been changed to be in accordance with the new findFinalRank function
-        auto current = node.second->getCentrality() * 0.2 + node.second->getCongestRank() * 0.8; //for final processing need to use in normalization for all 3 componenets of rank, redo 
-        difference= current - mean;
+         auto current = node.second->getCentrality() * 0.15 + node.second->getCongestRank() * 0.4 + node.second->getPopRank() * 0.25 + node.second->getConstrRank() * 0.2;
         total += difference * difference; //difference^2
     }
 
