@@ -221,7 +221,7 @@ void loadData(GraphStructure& graph, ifstream& file){
             shared_ptr<City> city5 = make_shared<City>(dest_city_s, county, state, stof(south_lat), stof(south_lng), stoi(severity), stoi(change_2020_23), 49 - stoi(const_cost_rank));
             string city5_key = generateKey(dest_city_s, county, state);
             graph.addToMap(city5_key, city5);
-            graph.addEdge(city1_key, city5_key, city1, city5 );
+            graph.addEdge(city1_key, city5_key, city1, city5);
         }    
 
         counter = -1;

@@ -1,9 +1,18 @@
+#define RAPIDJSON_HAS_STDSTRING 1
+
 #include <cmath>
 #include <fstream>  
 #include <iostream>
 #include <memory>
 #include <queue>
+
+#include "../../rapidjson/document.h"
+#include "../../rapidjson/ostreamwrapper.h"
+#include "../../rapidjson/writer.h"
+
 #include "../Headers/GraphStructure.h"
+
+using namespace rapidjson;
 
 GraphStructure::GraphStructure() {}
 
@@ -19,6 +28,8 @@ void GraphStructure::addToMap(std::string key, std::shared_ptr<City> city) {
 
 void GraphStructure::addEdge(std::string origin_key, std::string dest_key, std::shared_ptr<City> origin, std::shared_ptr<City> dest) { 
     adjList[origin_key].push_back(dest_key);
+    origin->incrementOutdegree();
+    dest->incrementIndegree();
     adjList[dest_key].push_back(origin_key);
 }
 
@@ -45,22 +56,36 @@ void GraphStructure::PrintMapAlphabetic(){
         std::cout << std::endl << ++count << " " << node.first << " with a rank of " << node.second->getCongestRank();
     }
 }
-
 //For Testing 
 void GraphStructure::PrintToFile(){
-    std::ofstream output("output/graph.txt");
+    std::ofstream output("output/graph.json");
+    OStreamWrapper osw(output);
+    Writer<OStreamWrapper> write(osw);
+
+    Document root;
+    root.SetObject();
+    {
+        Value list(kArrayType);
+        root.AddMember("cities", list, root.GetAllocator());
+    }
 
     for(auto node : adjList){
-        output << std::endl << " " << node.first;
         auto vec = node.second;
 
         for( int i = 0; i < vec.size(); i++) {
             if(id_city[vec[i]].get() != nullptr) {
-                output << " -> " << vec[i];
+                Value c(kObjectType);
+
+                std::string o = node.first;
+                
+                c.AddMember("origin", Value(o.data(), o.size(), root.GetAllocator()).Move(), root.GetAllocator());
+                c.AddMember("destination", Value(vec[i].data(), vec[i].size(), root.GetAllocator()).Move(), root.GetAllocator());
+                root["cities"].PushBack(c, root.GetAllocator());
             }
         }
     }
 
+    root.Accept(write);
     output.close();
 }
 

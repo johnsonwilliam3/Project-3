@@ -14,10 +14,7 @@ x = meta["lat"]
 y = meta["long"]
 region = meta["region"]
 
-m = folium.Map(location = [x, y], zoom_start = 16)
+m = folium.Map(location = [x, y], zoom_start = 1)
 m.save("output/map.html")
-
-os.system("cd App")
-os.system("npm run start")
 
 read.close()

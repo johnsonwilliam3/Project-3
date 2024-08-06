@@ -25,6 +25,8 @@ class City {
     float lat;
     float lng;
     Rank rank;
+    int outdegree;
+    int indegree;
     float finalIndex;
    
     public:
@@ -35,7 +37,9 @@ class City {
     }
 
     City(std::string cty, std::string County, std::string State, float Lat, float rnk, int congest_rank, float pop_pred, int constr_rank)
-        : city(cty), county(County), state(State), lat(Lat), lng(rnk), rank(congest_rank,pop_pred, constr_rank) {}
+        : city(cty), county(County), state(State), lat(Lat), lng(rnk), rank(congest_rank,pop_pred, constr_rank) {
+            indegree = outdegree = 0;
+        }
 
     std::string getCity(){
         return city;
@@ -79,6 +83,14 @@ class City {
 
     void setFinalRank(float _rank) {
         finalIndex = _rank;
+    }
+
+    void incrementIndegree() {
+        indegree++;
+    }
+
+    void incrementOutdegree() {
+        outdegree++;
     }
 };
 
