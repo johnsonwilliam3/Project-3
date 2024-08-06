@@ -6,6 +6,7 @@ import webbrowser
 print("Hello, Python! Creating and Loading Web Map")
 
 read = open("output/data.json")
+graphData = open("output/graph.json")
 
 data = json.load(read)
 meta = data["metadata"]

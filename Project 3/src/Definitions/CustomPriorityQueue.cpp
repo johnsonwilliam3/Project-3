@@ -26,9 +26,9 @@ void CustomPriorityQueue::heapifyUp(int index) {
     int parentIndex = (size - 1) / 2;
     if(parentIndex >= 0) {
         std::shared_ptr<City> parent = heap[parentIndex];
-        if(useDegree ? (c->getDegree() > parent->getDegree()) : (c->getFinalIndex() > parent->getFinalIndex())) {
+        if((useDegree ? (c->getDegree() > parent->getDegree()) : (c->getFinalIndex() > parent->getFinalIndex()))) {
             //Swap
-            std::shared_ptr<City>& temp = heap[index];
+            std::shared_ptr<City> temp = heap[index];
             heap[index] = heap[parentIndex];
             heap[parentIndex] = temp;
             heapifyUp(parentIndex);
@@ -41,13 +41,13 @@ void CustomPriorityQueue::heapifyDown(int index) {
     int leftChild = index * 2;
     int rightChild = index * 2 + 1;
 
-    if(leftChild < size && useDegree ? (heap[leftChild]->getDegree() > heap[largestChildIndex]->getDegree()) :
-    (heap[leftChild]->getFinalIndex() > heap[largestChildIndex]->getFinalIndex())) {
+    if(leftChild < size && (useDegree ? (heap[leftChild]->getDegree() > heap[largestChildIndex]->getDegree()) :
+    (heap[leftChild]->getFinalIndex() > heap[largestChildIndex]->getFinalIndex()))) {
         largestChildIndex = leftChild; 
     }
 
-    if(rightChild < size && useDegree ? (heap[rightChild]->getDegree() > heap[largestChildIndex]->getDegree()) :
-    (heap[rightChild]->getFinalIndex() > heap[largestChildIndex]->getFinalIndex())) {
+    if(rightChild < size && (useDegree ? (heap[rightChild]->getDegree() > heap[largestChildIndex]->getDegree()) :
+    (heap[rightChild]->getFinalIndex() > heap[largestChildIndex]->getFinalIndex()))) {
         largestChildIndex = rightChild; 
     }
 
@@ -61,6 +61,7 @@ void CustomPriorityQueue::heapifyDown(int index) {
 }
 
 void CustomPriorityQueue::insert(std::shared_ptr<City>& c) {
+    heap.resize(size + 1);
     heap[size] = c;
     heapifyUp(size);
     size++; 
@@ -71,6 +72,7 @@ std::shared_ptr<City> CustomPriorityQueue::extract() {
     heap[0] = heap[size - 1];
     size--;
     heapifyDown(0);
+    heap.resize(size);
     return extraction;
 }
 
@@ -95,4 +97,3 @@ std::vector<std::shared_ptr<City>> CustomPriorityQueue::requestNCities(GraphStru
 
     return cityVec;
 }
-//Alter

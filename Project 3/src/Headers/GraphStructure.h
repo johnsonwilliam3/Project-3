@@ -37,12 +37,18 @@ class City {
     }
 
     City(std::string cty, std::string County, std::string State, float Lat, float rnk, int congest_rank, float pop_pred, int constr_rank)
-        : city(cty), county(County), state(State), lat(Lat), lng(rnk), rank(congest_rank,pop_pred, constr_rank) {
-            indegree = outdegree = 0;
-        }
+        : city(cty), county(County), state(State), lat(Lat), lng(rnk), rank(congest_rank,pop_pred, constr_rank), indegree(0), outdegree(0) {}
 
     std::string getCity(){
         return city;
+    }
+
+    std::string getCounty(){
+        return county;
+    }
+
+    std::string getState(){
+        return state;
     }
 
     int getConstrRank() {
@@ -57,7 +63,7 @@ class City {
         return rank.population_prediction;
     }
 
-    void getPopRank(int _rank) {
+    void setPopRank(int _rank) {
         rank.population_prediction = _rank;
     }
 

@@ -49,9 +49,32 @@ int main() {
     string header;
     string line;
     getline(input, header);
-    
+
+    bool useCentralityAsMethod = false;
+    string resp;
+    cout << "Which method would you like to use to determine importance?" << endl;
+    cout << "1. Betweenness Centrality" << endl;
+    cout << "2. Degree Calculation" << endl; 
+    cout << "All responses other than \"2\" will select Betweenness Centrality." << endl;
+
+    cin >> resp;
+    if(resp != "2") {
+        useCentralityAsMethod = true;
+    }
+
     loadData(graph, input); //loading data into a graph
-    Algorithm::findFinalRank(graph); //Calculate rank
+
+    if(useCentralityAsMethod) {
+        Algorithm::findFinalRank(graph); //Calculate rank
+    }
+    
+    CustomPriorityQueue cpq(!useCentralityAsMethod);
+    vector<shared_ptr<City>> topCities = cpq.requestNCities(graph, 1000);
+
+    for(int x = 0; x < 1000; x++) {
+        cout << (x + 1) << ". " << topCities[x]->getCity() << ", " << topCities[x]->getCounty() << " County, " << topCities[x]->getState() << endl;
+    }
+
     graph.PrintToFile(); //Output data 
 
     map<int, string> stateIndex;
@@ -63,22 +86,22 @@ int main() {
     stateIndex[6] = "Maine";
     stateIndex[7] = "Nebraska";
     stateIndex[8] = "Oregon";
-    stateIndex[9] = "Washington";
+    stateIndex[9] = "Connecticut";
 
-    system("cls");
+    //system("cls");
     cout << "1. New York" << endl;
     cout << "2. Calfornia" << endl;
     cout << "3. Florida" << endl;
     cout << "4. Louisiana" << endl;
     cout << "5. Texas" << endl;
     cout << "6. Maine" << endl;
-    cout << "7. Nebraska" << endl;
+    cout << "7. Minnesota" << endl;
     cout << "8. Oregon" << endl;
-    cout << "9. Washington" << endl;
+    cout << "9. Connecticut" << endl;
+    cout << "(Defaults to California)" << endl;
     cout << "E[X]IT" << endl;
     cout << "Select a region to analyze: ";
 
-    string resp;
     cin >> resp; 
     int numResp; 
 
@@ -91,7 +114,6 @@ int main() {
 
     //Reference the Allocator, needed often as an arg
     Document::AllocatorType& a = jsonRoot.GetAllocator();
-
     {
         Value meta(kObjectType);
         jsonRoot.AddMember("metadata", meta, a);
@@ -108,11 +130,11 @@ int main() {
         if(output.is_open()) {
             //Insert data into rapidjson::Value tyoe
             string i = stateIndex[x];
-            Value resp(i.data(), i.size(), a);
+            Value r(i.data(), i.size(), a);
             Value coords(kObjectType);
             assert(jsonRoot.HasMember("metadata"));
             //Region metadata
-            jsonRoot["metadata"].AddMember("region", resp, a);
+            jsonRoot["metadata"].AddMember("region", r, a);
             double lat = 31.9;
             double lng = -93.4;
             //Add coordinates to json data

@@ -2,7 +2,9 @@
 #define ALGORITHM_H
 
 #include <iostream>
+#include <memory>
 #include <unordered_map>
+#include <vector>
 #include "GraphStructure.h"
 
 class Algorithm {

@@ -106,9 +106,9 @@ void Algorithm::findFinalRank(GraphStructure& gs) {
     // std::priority_queue<std::pair<int, std::string>, std::vector<std::pair<int, std::string>>, std::less<std::pair<int, std::string>>> pq;
     std::unordered_map<std::string, std::shared_ptr<City>> cities = gs.getCities();
     for(auto node : cities){
-        int normalizedRank = node.second->getCentrality() * 0.2 + node.second->getCongestRank() * 0.8; //(rank.centrality*0.2+rank.congestion_rank*0.6 + rank.construction_rank*0.1+rank.population_prediction*0.1);
-        auto final = (normalizedRank - MEAN) / STD;
-        node.second->setFinalRank(final * 10); //updates the graph
+        float normalizedRank = node.second->getCentrality() * 0.15 + node.second->getCongestRank() * 0.4 + node.second->getPopRank() * 0.25 + node.second->getConstrRank() * 0.2;
+        auto fin = (normalizedRank - MEAN) / STD;
+        node.second->setFinalRank(fin * 10); //updates the graph
         // pq.push(std::make_pair((int) node.second->getFinalIndex(), node.first));  //updates the priority queue
     }
 
@@ -123,7 +123,6 @@ void Algorithm::findFinalRank(GraphStructure& gs) {
     }
     */
 }
-
 
 std::unordered_map<std::string, int> Algorithm::filterOutNodesBasedOnDegree(GraphStructure& gs, std::unordered_map<std::string, int> importantNodes) {
     std::unordered_map<std::string, int> outdegree = gs.outDegree();

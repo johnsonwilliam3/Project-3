@@ -23,14 +23,16 @@ void GraphStructure::addToMap(std::string key, std::shared_ptr<City> city) {
 
     else {
         id_city[key]->setCongestRank(id_city[key]->getCongestRank() + city->getCongestRank());
+        id_city[key]->setPopRank(id_city[key]->getPopRank() + city->getPopRank());
+        id_city[key]->setConstrRank(id_city[key]->getConstrRank() + city->getConstrRank());
     }
 }
 
 void GraphStructure::addEdge(std::string origin_key, std::string dest_key, std::shared_ptr<City> origin, std::shared_ptr<City> dest) { 
     adjList[origin_key].push_back(dest_key);
+    adjList[dest_key].push_back(origin_key);
     origin->incrementOutdegree();
     dest->incrementIndegree();
-    adjList[dest_key].push_back(origin_key);
 }
 
 //For Testing 
@@ -56,7 +58,8 @@ void GraphStructure::PrintMapAlphabetic(){
         std::cout << std::endl << ++count << " " << node.first << " with a rank of " << node.second->getCongestRank();
     }
 }
-//For Testing 
+
+//Dev
 void GraphStructure::PrintToFile(){
     std::ofstream output("output/graph.json");
     OStreamWrapper osw(output);
