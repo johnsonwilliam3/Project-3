@@ -2,127 +2,93 @@
 
 CustomPriorityQueue::CustomPriorityQueue() {
     size = 0;
-    capacity = 4;
 }
 
 CustomPriorityQueue::CustomPriorityQueue(const CustomPriorityQueue& pq) {
     size = pq.size;
-    capacity = pq.capacity;
-    for(int i = 0; i < size; i++) {
-        heap[i] = pq.heap[i];
+    for(auto node : pq.heap) {
+        heap.push_back(node);
     }
 }
 
-CustomPriorityQueue::operator=(const CustomPriorityQueue& pq) {
+CustomPriorityQueue& CustomPriorityQueue::operator=(const CustomPriorityQueue& pq) {
     size = pq.size;
-    capacity = pq.capacity;
-    for(int i = 0; i < size; i++) {
-        heap[i] = pq.heap[i];
+    for(auto node : pq.heap) {
+        heap.push_back(node);
     }
-}
 
-CustomPriorityQueue::~CustomPriorityQueue() {
-    delete[] heap;
+    return *this;
 }
 
 void CustomPriorityQueue::heapifyUp(int index) {   
-    Region* r = heap[index];
+    std::shared_ptr<City> c = heap[index];
     int parentIndex = (size - 1) / 2;
     if(parentIndex >= 0) {
-        City* parent = heap[parentIndex];
-        if(r->getIdealIndex() > parent->getFinalIndex()) {
+        std::shared_ptr<City> parent = heap[parentIndex];
+        if(c->getFinalIndex() > parent->getFinalIndex()) {
             //Swap
-            City* temp = heap[index];
+            std::shared_ptr<City>& temp = heap[index];
             heap[index] = heap[parentIndex];
             heap[parentIndex] = temp;
-            heapify(parentIndex);
+            heapifyUp(parentIndex);
         }
     }
-
+}
 
 void CustomPriorityQueue::heapifyDown(int index) {   
-    Region* r = heap[index];
     int largestChildIndex = index;
     int leftChild = index * 2;
     int rightChild = index * 2 + 1;
 
-    if(leftChild < size && heap[leftChild]->idealIndex > heap[largestChildIndex]->idealIndex) {
+    if(leftChild < size && heap[leftChild]->getFinalIndex() > heap[largestChildIndex]->getFinalIndex()) {
         largestChildIndex = leftChild; 
     }
 
-    if(rightChild < size && heap[rightChild]->idealIndex > heap[largestChildIndex]->idealIndex) {
+    if(rightChild < size && heap[rightChild]->getFinalIndex() > heap[largestChildIndex]->getFinalIndex()) {
         largestChildIndex = rightChild; 
     }
 
     if(largestChildIndex > index) {
-            //Swap
-            shared_ptr<City> temp = heap[index];
-            heap[index] = heap[largestChildIndex];
-            heap[largestChildIndex] = temp;
-            heapifyDown(largestChildIndex);
-        }
+        //Swap
+        std::shared_ptr<City> temp = heap[index];
+        heap[index] = heap[largestChildIndex];
+        heap[largestChildIndex] = temp;
+        heapifyDown(largestChildIndex);
     }
 }
 
-void CustomPriorityQueue::insert(shared_ptr<City> c) {
-    heap[size] = r;
+void CustomPriorityQueue::insert(std::shared_ptr<City>& c) {
+    heap[size] = c;
     heapifyUp(size);
     size++; 
-    if(size == capacity) {
-        shared_ptr<City>* copy = new shared_ptr<City>[capacity * 2];
-        for(int i = 0; i < size; i++) {
-            copy[i] = heap[i];
-        }
-
-        delete[] heap;
-        heap = copy;
-    }
-
-    else if(size <= capacity / 2 && capacity > 4) {
-        shared_ptr<City>* copy = new shared_ptr<City>[capacity / 2];
-        for(int i = 0; i < size; i++) {
-            copy[i] = heap[i];
-        }
-
-        delete[] heap;
-        heap = copy;
-    }
 }
 
-CustomPriorityQueue::shared_ptr<City> extract() {
-    Region* extraction = heap[0];
+std::shared_ptr<City> CustomPriorityQueue::extract() {
+    std::shared_ptr<City> extraction = heap[0];
     heap[0] = heap[size - 1];
     size--;
     heapifyDown(0);
-
-    if(size <= capacity / 2 && capacity > 4) {
-        shared_ptr<City>* copy = new shared_ptr<City>[capacity / 2];
-        for(int i = 0; i < size; i++) {
-            copy[i] = heap[i];
-        }
-
-        delete[] heap;
-        heap = copy;
-    }
+    return extraction;
 }
 
 void CustomPriorityQueue::printHeap() {
     for(int i = 0; i < size; i++) {
-        std::cout << heap[i]->getFinalIndex()) << std::endl;
+        std::cout << heap[i]->getFinalIndex() << std::endl;
     }
 }
 
-shared_ptr<City>* CustomPriorityQueue::requestNCities(GraphStructure& graph, const int n){
-    std::unordered_map<std::string, std::shared_ptr<City>>& cities = graph.getCities();
+std::vector<std::shared_ptr<City>> CustomPriorityQueue::requestNCities(GraphStructure& gs, const int n){
+    std::unordered_map<std::string, std::shared_ptr<City>>& cities = gs.getCities();
     
-    for (const auto& pair : cities){
+    for (auto pair : cities){
         insert(pair.second);
     }
-    std::shared_ptr<City>* cityArr = new std::shared_ptr<City>[n];
+
+    std::vector<std::shared_ptr<City>> cityVec(n);
 
     for(int i = 0; i < n; ++i){
-        cityArr[i] = extract();
+        cityVec[i] = extract();
     }
 
-    return cityArr;
+    return cityVec;
 }

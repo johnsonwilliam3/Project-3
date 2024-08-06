@@ -19,6 +19,8 @@
 
 #include "Headers/GraphStructure.h"
 #include "Headers/Algorithm.h"
+#include "Headers/CustomPriorityQueue.h"
+
 #include "../rapidjson/document.h"
 #include "../rapidjson/writer.h"
 #include "../rapidjson/stringbuffer.h"
@@ -53,10 +55,10 @@ int main() {
     graph.PrintToFile(); //Output data 
 
     map<int, string> stateIndex;
-    stateIndex[1] = "Louisiana";
-    stateIndex[2] = "Idaho";
-    stateIndex[3] = "California";
-    stateIndex[4] = "Florida";
+    stateIndex[1] = "New York";
+    stateIndex[2] = "California";
+    stateIndex[3] = "Florida";
+    stateIndex[4] = "Louisiana";
     stateIndex[5] = "Texas";
     stateIndex[6] = "Maine";
     stateIndex[7] = "Nebraska";
@@ -64,10 +66,10 @@ int main() {
     stateIndex[9] = "Washington";
 
     system("cls");
-    cout << "1. Louisiana" << endl;
-    cout << "2. Idaho" << endl;
-    cout << "3. Calfornia" << endl;
-    cout << "4. Florida" << endl;
+    cout << "1. New York" << endl;
+    cout << "2. Calfornia" << endl;
+    cout << "3. Florida" << endl;
+    cout << "4. Louisiana" << endl;
     cout << "5. Texas" << endl;
     cout << "6. Maine" << endl;
     cout << "7. Nebraska" << endl;
