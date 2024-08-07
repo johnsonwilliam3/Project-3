@@ -30,3 +30,5 @@ Custom Priority Queue should be fully implemented and complete. I'm unsure if we
 but it was very easy to finish so I just did it anyway. The function Algorithm::extractN 
 pops the most important nodes relative to finalIndex. If we would like to change this to be based on congestion or any 
 other index, this can be quickly done. - William
+
+Instructions - Have a c++ compiler and python installed. Go to working directory in cmd and simply run the makefile using "make"

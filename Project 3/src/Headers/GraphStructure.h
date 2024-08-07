@@ -76,7 +76,7 @@ class City {
     }
 
     int getCentrality() {
-        return rank.centrality;; 
+        return rank.centrality;
     }
 
     void setCentrality(int _centrality) {
@@ -101,6 +101,18 @@ class City {
 
     int getDegree() {
         return indegree + outdegree;
+    }
+
+    float getWeightedDegree() {
+        return getDegree() * (getCongestRank() * 0.5 + getPopRank() * 0.25 + getConstrRank() * 0.25);
+    }
+
+    float getLatitude() {
+        return lat;
+    }
+
+    float getLongitude() {
+        return lng;
     }
 };
 

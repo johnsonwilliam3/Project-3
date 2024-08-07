@@ -55,8 +55,6 @@ void Algorithm::findBetweennessCentrality(GraphStructure& gs, GraphStructure& su
 
             if (w != src.first) {
                 betweenness_centrality[w] += dependency[w];
-                // This line is used for debugging
-                //std::cout << w << ": " << dependency[w] << std::endl;
                 //Change
             }
         }
@@ -99,16 +97,16 @@ void Algorithm::findImportantNodes(GraphStructure& gs) {
 }
 
 void Algorithm::findFinalRank(GraphStructure& gs) {
-    findImportantNodes(gs);
-    const float MEAN = Algorithm::findMean(gs); //will only compute 
+    findImportantNodes(gs);    const float MEAN = Algorithm::findMean(gs); //will only compute 
     const float STD = Algorithm::findSTD(gs, MEAN);
     // This line is disabled as it is only required for debugging and is unnecessary for the functions intended purpose
     // std::priority_queue<std::pair<int, std::string>, std::vector<std::pair<int, std::string>>, std::less<std::pair<int, std::string>>> pq;
     std::unordered_map<std::string, std::shared_ptr<City>> cities = gs.getCities();
     for(auto node : cities){
-        float normalizedRank = node.second->getCentrality() * 0.15 + node.second->getCongestRank() * 0.4 + node.second->getPopRank() * 0.25 + node.second->getConstrRank() * 0.2;
-        auto fin = (normalizedRank - MEAN) / STD;
-        node.second->setFinalRank(fin * 10); //updates the graph
+        float rank = node.second->getCentrality();
+        float norm = (rank - MEAN) / STD;
+        float fin = norm + node.second->getCongestRank() * 0.4 + node.second->getPopRank() * 0.25 + node.second->getConstrRank() * 0.2;
+        node.second->setFinalRank(fin); //updates the graph
         // pq.push(std::make_pair((int) node.second->getFinalIndex(), node.first));  //updates the priority queue
     }
 
@@ -153,8 +151,8 @@ std::unordered_map<std::string, int> Algorithm::filterOutNodesBasedOnRank(GraphS
 
     std::unordered_map<std::string, std::shared_ptr<City>> cities = gs.getCities();
     for(auto node : cities){
-        float norm_rank = (node.second->getCongestRank() - MEAN) / STD;
-        pq.push(std::make_pair((int) norm_rank * 10, node.first));
+        float norm_rank = (node.second->getCentrality() - MEAN) / STD;
+        pq.push(std::make_pair((int) norm_rank, node.first));
     }
 
     std::unordered_map<std::string, int> importantNodes; 
@@ -170,13 +168,13 @@ std::unordered_map<std::string, int> Algorithm::filterOutNodesBasedOnRank(GraphS
 }
 
 float Algorithm::findMean(GraphStructure& gs) {
-    int size = gs.edgeCount();
+    int size = gs.getCities().size();
     float total = 0;
 
     std::unordered_map<std::string, std::shared_ptr<City>> cities = gs.getCities();
     for(auto node : cities) {
         // This is the new implementation to be in accordance with the findFinalRank function
-        auto current = node.second->getCentrality() * 0.15 + node.second->getCongestRank() * 0.4 + node.second->getPopRank() * 0.25 + node.second->getConstrRank() * 0.2;  
+        auto current = node.second->getCentrality();  
         total += current;
     }
 
@@ -184,14 +182,15 @@ float Algorithm::findMean(GraphStructure& gs) {
 }
 
 float Algorithm::findSTD(GraphStructure& gs, int mean) { //Standard Deviation
-    int size = gs.edgeCount();
+    int size = gs.getCities().size();
     float difference;
     float total = 0;
 
     std::unordered_map<std::string, std::shared_ptr<City>> cities = gs.getCities();
     for(auto node : cities) {
         // This has also been changed to be in accordance with the new findFinalRank function
-        auto current = node.second->getCentrality() * 0.15 + node.second->getCongestRank() * 0.4 + node.second->getPopRank() * 0.25 + node.second->getConstrRank() * 0.2;
+        float current = node.second->getCentrality();
+        difference = current - mean; 
         total += difference * difference; //difference^2
     }
 

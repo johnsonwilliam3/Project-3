@@ -26,7 +26,7 @@ void CustomPriorityQueue::heapifyUp(int index) {
     int parentIndex = (size - 1) / 2;
     if(parentIndex >= 0) {
         std::shared_ptr<City> parent = heap[parentIndex];
-        if((useDegree ? (c->getDegree() > parent->getDegree()) : (c->getFinalIndex() > parent->getFinalIndex()))) {
+        if((useDegree ? (c->getWeightedDegree() > parent->getWeightedDegree()) : (c->getFinalIndex() > parent->getFinalIndex()))) {
             //Swap
             std::shared_ptr<City> temp = heap[index];
             heap[index] = heap[parentIndex];
@@ -41,12 +41,12 @@ void CustomPriorityQueue::heapifyDown(int index) {
     int leftChild = index * 2;
     int rightChild = index * 2 + 1;
 
-    if(leftChild < size && (useDegree ? (heap[leftChild]->getDegree() > heap[largestChildIndex]->getDegree()) :
+    if(leftChild < size && (useDegree ? (heap[leftChild]->getWeightedDegree() > heap[largestChildIndex]->getWeightedDegree()) :
     (heap[leftChild]->getFinalIndex() > heap[largestChildIndex]->getFinalIndex()))) {
         largestChildIndex = leftChild; 
     }
 
-    if(rightChild < size && (useDegree ? (heap[rightChild]->getDegree() > heap[largestChildIndex]->getDegree()) :
+    if(rightChild < size && (useDegree ? (heap[rightChild]->getWeightedDegree() > heap[largestChildIndex]->getWeightedDegree()) :
     (heap[rightChild]->getFinalIndex() > heap[largestChildIndex]->getFinalIndex()))) {
         largestChildIndex = rightChild; 
     }
@@ -78,7 +78,7 @@ std::shared_ptr<City> CustomPriorityQueue::extract() {
 
 void CustomPriorityQueue::printHeap() {
     for(int i = 0; i < size; i++) {
-        std::cout << (useDegree ? heap[i]->getDegree() : heap[i]->getFinalIndex()) << std::endl;
+        std::cout << (useDegree ? heap[i]->getWeightedDegree() : heap[i]->getFinalIndex()) << std::endl;
     }
 }
 

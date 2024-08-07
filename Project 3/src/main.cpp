@@ -69,41 +69,11 @@ int main() {
     }
     
     CustomPriorityQueue cpq(!useCentralityAsMethod);
-    vector<shared_ptr<City>> topCities = cpq.requestNCities(graph, 1000);
 
-    for(int x = 0; x < 1000; x++) {
-        cout << (x + 1) << ". " << topCities[x]->getCity() << ", " << topCities[x]->getCounty() << " County, " << topCities[x]->getState() << endl;
-    }
-
-    graph.PrintToFile(); //Output data 
-
-    map<int, string> stateIndex;
-    stateIndex[1] = "New York";
-    stateIndex[2] = "California";
-    stateIndex[3] = "Florida";
-    stateIndex[4] = "Louisiana";
-    stateIndex[5] = "Texas";
-    stateIndex[6] = "Maine";
-    stateIndex[7] = "Nebraska";
-    stateIndex[8] = "Oregon";
-    stateIndex[9] = "Connecticut";
-
-    //system("cls");
-    cout << "1. New York" << endl;
-    cout << "2. Calfornia" << endl;
-    cout << "3. Florida" << endl;
-    cout << "4. Louisiana" << endl;
-    cout << "5. Texas" << endl;
-    cout << "6. Maine" << endl;
-    cout << "7. Minnesota" << endl;
-    cout << "8. Oregon" << endl;
-    cout << "9. Connecticut" << endl;
-    cout << "(Defaults to California)" << endl;
-    cout << "E[X]IT" << endl;
-    cout << "Select a region to analyze: ";
-
-    cin >> resp; 
-    int numResp; 
+    cout << "How many cities would you like to track?" << endl;
+    int n;
+    cin >> n;
+    vector<shared_ptr<City>> topCities = cpq.requestNCities(graph, n);
 
     //Output path
     string pythonControlPath = "output/data.json";
@@ -112,46 +82,95 @@ int main() {
     Document jsonRoot; 
     jsonRoot.SetObject();
 
-    //Reference the Allocator, needed often as an arg
-    Document::AllocatorType& a = jsonRoot.GetAllocator();
-    {
-        Value meta(kObjectType);
-        jsonRoot.AddMember("metadata", meta, a);
-    }
+    graph.PrintToFile(); //Output data for debug
 
     //Wrap ofstream class for outputting JSON
     ofstream output(pythonControlPath);
     OStreamWrapper jsonOutput(output);
     Writer<OStreamWrapper> write(jsonOutput);
 
-    //If not exiting
-    if(!(resp == "X" || resp == "x")) {
-        int x = stoi(resp);
-        if(output.is_open()) {
-            //Insert data into rapidjson::Value tyoe
-            string i = stateIndex[x];
-            Value r(i.data(), i.size(), a);
-            Value coords(kObjectType);
-            assert(jsonRoot.HasMember("metadata"));
-            //Region metadata
-            jsonRoot["metadata"].AddMember("region", r, a);
-            double lat = 31.9;
-            double lng = -93.4;
-            //Add coordinates to json data
-            jsonRoot["metadata"].AddMember("lat", Value(lat).Move(), a);
-            jsonRoot["metadata"].AddMember("long", Value(lng).Move(), a);
-            //Send to writer
-            jsonRoot.Accept(write);
+    //Reference the Allocator, needed often as an arg
+    Document::AllocatorType& a = jsonRoot.GetAllocator();
+
+    if(output.is_open()) {
+        Value topCitiesJSON(kArrayType);
+        for(int x = 0; x < n; x++) {
+            Value currentCity(kObjectType);
+            string cName = topCities[x]->getCity();
+            string countyName = topCities[x]->getCounty();
+            string stateName = topCities[x]->getState();
+            float latToOutput = topCities[x]->getLatitude();
+            float longToOutput = topCities[x]->getLongitude();
+            int congestionRank = topCities[x]->getCongestRank();
+            int popRank = topCities[x]->getPopRank();
+            int constrRank = topCities[x]->getConstrRank();
+            float cnt = topCities[x]->getFinalIndex();
+            float deg = topCities[x]->getWeightedDegree();
+            {
+                Value cityToValue(cName.data(), cName.size(), a);
+                Value countyToValue(countyName.data(), countyName.size(), a);
+                Value stateToValue(stateName.data(), stateName.size(), a);
+                Value latToValue(latToOutput);
+                Value longToValue(longToOutput);
+                Value congestionToValue(congestionRank);
+                Value popToValue(popRank);
+                Value constrToValue(constrRank);
+
+                if(useCentralityAsMethod) {
+                    Value cntToValue(cnt);
+                    currentCity.AddMember("weighted_centrality", cntToValue, a);
+                }
+
+                else {
+                    Value degToValue(deg);
+                    currentCity.AddMember("weighted_degree", degToValue, a);
+                }
+
+                currentCity.AddMember("city", cityToValue, a);
+                currentCity.AddMember("county", countyToValue, a);
+                currentCity.AddMember("state", stateToValue, a);
+                currentCity.AddMember("latitude", latToValue, a);
+                currentCity.AddMember("longitude", longToValue, a);
+                currentCity.AddMember("congestion_rank", congestionToValue, a);
+                currentCity.AddMember("population_rank", popToValue, a);
+                currentCity.AddMember("construction_rank", constrToValue, a);
+            }
+
+            topCitiesJSON.PushBack(currentCity, a);
         }
-        
-        //Start Python Program
-        system("py PythonFiles\\main.py");
+
+        jsonRoot.AddMember("topCities", topCitiesJSON, a);
     }
 
-    else {
-        cout << endl << "Exiting..." << endl;
-        delay(1000);
-        system("cls");
+    {
+        Value meta(kObjectType);
+        jsonRoot.AddMember("metadata", meta, a);
+    }
+
+    int x = stoi(resp);
+    if(output.is_open()) {
+        //Insert data into rapidjson::Value tyoe
+        string i = "Louisiana"; //Default location will be Indiana, user can look all around the US.
+        //Initially I believed the possiblities of mapping to be more limited. The user
+        //does not need to pick a specific area to look at. 
+        Value r(i.data(), i.size(), a);
+        Value coords(kObjectType);
+        Value ucam(useCentralityAsMethod);
+        assert(jsonRoot.HasMember("metadata"));
+        //Region metadata
+        jsonRoot["metadata"].AddMember("region", r, a);
+        jsonRoot["metadata"].AddMember("use_centrality", ucam, a);
+        double lat = 31.9;
+        double lng = -93.4;
+        //Add coordinates to json data
+        jsonRoot["metadata"].AddMember("lat", Value(lat).Move(), a);
+        jsonRoot["metadata"].AddMember("long", Value(lng).Move(), a);
+        //Send to writer
+        jsonRoot.Accept(write);
+    
+    
+        //Start Python Program
+        system("py PythonFiles\\main.py");
     }
 
     //Close file streams
